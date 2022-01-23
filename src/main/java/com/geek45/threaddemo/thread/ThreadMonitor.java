@@ -4,6 +4,9 @@
  */
 package com.geek45.threaddemo.thread;
 
+import com.geek45.threaddemo.thread.config.ThreadPoolConfiguration;
+import com.geek45.threaddemo.thread.strategy.GeneratorNameFactory;
+import com.geek45.threaddemo.thread.strategy.GeneratorThreadNameStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @ClassName: ThreadMonitor
@@ -19,18 +23,24 @@ import java.util.concurrent.TimeUnit;
  * @Author: rubik
  *  rubik create ThreadMonitor.java of 2022/1/20 11:08 下午
  */
-public class ThreadMonitor {
+public class  ThreadMonitor {
     private static final Logger logger = LoggerFactory.getLogger(ThreadMonitor.class);
 
     private static Map<String, Object> map = new ConcurrentHashMap<>(16);
 
     private static ThreadPoolExecutor poolExecutor = null;
 
-    public static synchronized ThreadPoolExecutor initPool() {
+    public static synchronized ThreadPoolExecutor initPool(ThreadPoolConfiguration configuration) {
         if (null != poolExecutor) {
             return poolExecutor;
         }
-        poolExecutor = new ThreadPoolExecutor(8, 128, 0, TimeUnit.SECONDS, new LinkedBlockingDeque<>(2048), new GeekThreadFactory());
+        GeneratorThreadNameStrategy generatorThreadNameStrategy = GeneratorNameFactory.INSTANCE.getStrategyByType(configuration.getGeneratorNameType());
+        poolExecutor = new ThreadPoolExecutor(configuration.getCoreSize(),
+                configuration.getMaxSize(),
+                configuration.getKeepAliveTime(),
+                TimeUnit.valueOf(configuration.getTimeUnit()),
+                new LinkedBlockingDeque<>(configuration.getTaskMaxCount()),
+                new GeekThreadFactory());
         return poolExecutor;
     }
 
@@ -47,9 +57,9 @@ public class ThreadMonitor {
     }
 
     public static void printThreadInfo() {
-        //TODO 打印当前线程池状态
-        logger.info("当前线程池状态：线程数量：{}.活跃线程数量：{}.最大线程数量：{}.任务数量：{}.配置核心线程阈值：{}.配置线程数量阈值：{}.",
+        logger.info("当前线程池状态：线程数量：{}.监控线程数:{}.活跃线程数量：{}.最大线程数量：{}.任务数量：{}.配置核心线程阈值：{}.配置线程数量阈值：{}.",
                 poolExecutor.getPoolSize(),
+                map.size(),
                 poolExecutor.getActiveCount(),
                 poolExecutor.getLargestPoolSize(),
                 poolExecutor.getTaskCount(),
@@ -58,30 +68,46 @@ public class ThreadMonitor {
 
     }
 
-    private static Boolean isMonitor;
+    private static AtomicBoolean isMonitor = new AtomicBoolean(Boolean.FALSE);
 
-    public static void monitor() {
-        isMonitor = true;
-        //TODO 开始执行监控，考虑单独打印日志，由配置触发，可手动结束
-        poolExecutor.execute(()->{
+    /**
+     * //TODO 开始执行监控，考虑单独打印日志，由配置触发，可手动结束
+     * 开始监控
+     * @param millis 监控间隔时间
+     */
+    public static void monitor(long millis) {
+        boolean isAction = isMonitor.compareAndSet(Boolean.FALSE, Boolean.TRUE);
+        if (!isAction) {
+            logger.info("监控已经是启动状态");
+            return;
+        }
+
+        poolExecutor.execute(() -> {
             String name = Thread.currentThread().getName();
             addThread(name, Thread.currentThread());
-            while (isMonitor) {
+            while (isMonitor.get()) {
                 printThreadInfo();
-                try {
-                    Thread.sleep(3000L);
-                } catch (InterruptedException e) {
-                    logger.error("sleep exception...", e);
-                }
+                sleep(millis);
             }
             removeThread(name);
         });
     }
 
+    /**
+     * 休眠
+     * @param millis 指定休眠多久
+     */
+    public static void sleep(long millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            logger.error("休眠异常...", e);
+        }
+    }
+
     public static void stopMonitor() {
-        //TODO 结束监控
+        isMonitor.compareAndSet(Boolean.TRUE, Boolean.FALSE);
         logger.info("结束监控...");
-        isMonitor = false;
     }
 
 }

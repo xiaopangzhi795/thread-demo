@@ -14,7 +14,7 @@ class ThreadDemoApplicationTests {
 
     @Test
     void contextLoads() throws InterruptedException {
-        ThreadMonitor.monitor();
+        ThreadMonitor.monitor(3000L);
         executor.executor(()->{
             System.err.println("你好你好你好你好");
         });

@@ -5,12 +5,11 @@
 package com.geek45.threaddemo.thread;
 
 import com.geek45.threaddemo.thread.config.ThreadPoolConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @ClassName: ThreadExecutor
@@ -27,7 +26,12 @@ public class ThreadExecutor implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        pool = ThreadMonitor.initPool();
+        pool = ThreadMonitor.initPool(poolConfiguration);
+    }
+
+    @Autowired
+    public void init(ThreadPoolConfiguration threadPoolConfiguration) {
+        poolConfiguration = threadPoolConfiguration;
     }
 
     public void executor(GeekTaskRunnable task) {

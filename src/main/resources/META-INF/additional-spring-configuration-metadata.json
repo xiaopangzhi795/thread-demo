@@ -1,65 +1,40 @@
 {
-  "group": [
-    {
-      "name": "thread.config",
-      "type": "com.geek45.threaddemo.thread.config.ThreadPoolConfiguration",
-      "description": "线程池配置 ."
-    }
-  ],
   "properties": [
     {
       "name": "thread.config.coreSize",
-      "type": "String.lang.Integer",
       "description": "核心线程数量 .",
-      "sourceType": "com.geek45.threaddemo.thread.config.ThreadPoolConfiguration",
       "defaultValue": 8
     },{
       "name": "thread.config.maxSize",
-      "type": "String.lang.Integer",
       "description": "最大线程数 .",
-      "sourceType": "com.geek45.threaddemo.thread.config.ThreadPoolConfiguration",
       "defaultValue": 128
     },{
       "name": "thread.config.keepAliveTime",
-      "type": "String.lang.Long",
       "description": "闲置线程持续多久 .",
-      "sourceType": "com.geek45.threaddemo.thread.config.ThreadPoolConfiguration",
       "defaultValue": 0
     },{
       "name": "thread.config.timeUnit",
-      "type": "String.lang.String",
       "description": "时间单位 .",
-      "sourceType": "com.geek45.threaddemo.thread.config.ThreadPoolConfiguration",
       "defaultValue": "SECONDS"
     },{
       "name": "thread.config.key",
-      "type": "String.lang.String",
       "description": "生成线程名时所使用的的key .",
-      "sourceType": "com.geek45.threaddemo.thread.config.ThreadPoolConfiguration",
       "defaultValue": "thread"
     },{
       "name": "thread.config.generatorNameType",
-      "type": "String.lang.String",
       "description": "生成线程名的策略 .",
-      "sourceType": "com.geek45.threaddemo.thread.config.ThreadPoolConfiguration",
       "defaultValue": "SHORT_UID"
     },{
       "name": "thread.config.taskMaxCount",
-      "type": "String.lang.Integer",
       "description": "最大支持的任务数量 .",
-      "sourceType": "com.geek45.threaddemo.thread.config.ThreadPoolConfiguration",
       "defaultValue": 2048
     },{
       "name": "thread.config.daemon",
-      "type": "String.lang.Boolean",
       "description": "是否启用守护线程 .",
-      "sourceType": "com.geek45.threaddemo.thread.config.ThreadPoolConfiguration",
       "defaultValue": true
     },{
       "name": "thread.config.priority",
-      "type": "String.lang.Integer",
       "description": "线程优先级 .",
-      "sourceType": "com.geek45.threaddemo.thread.config.ThreadPoolConfiguration",
       "defaultValue": 5
     }
   ]

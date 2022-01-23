@@ -13,8 +13,8 @@ import org.slf4j.LoggerFactory;
  * @Author: rubik
  *  rubik create ThreadCallback.java of 2022/1/20 11:28 下午
  */
-public class ThreadCallback {
-    private static final Logger logger = LoggerFactory.getLogger(ThreadCallback.class);
+public class DefaultThreadCallback {
+    private static final Logger logger = LoggerFactory.getLogger(DefaultThreadCallback.class);
 
     public static void callSuccess(Thread t) {
         logger.info("[{}]执行异常，异常信息是...执行成功");

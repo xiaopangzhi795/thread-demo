@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.geek45.threaddemo.thread.config.ThreadPoolConfiguration

@@ -7,30 +7,40 @@ package com.geek45.threaddemo.thread.strategy.impl;
 import com.geek45.threaddemo.thread.config.ThreadPoolConfiguration;
 import com.geek45.threaddemo.thread.enums.GeneratorNameStrategy;
 import com.geek45.threaddemo.thread.strategy.GeneratorThreadNameStrategy;
-import com.geek45.threaddemo.thread.util.UUIDUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 /**
- * @ClassName: GeneratorLongUidName
- * @Decription: 生成32位uid类型的线程名
+ * @ClassName: GeneratorKeyAndIdName
+ * @Decription: 生成key+自增id的线程名
  * @Author: rubik
- *  rubik create GeneratorLongUidName.java of 2022/1/23 11:26 上午
+ *  rubik create GeneratorKeyAndIdName.java of 2022/1/23 11:26 上午
  */
 @Component
-public class GeneratorKeyAndUidName implements GeneratorThreadNameStrategy {
+public class GeneratorKeyAndIdName implements GeneratorThreadNameStrategy {
 
     private ThreadPoolConfiguration threadPoolConfiguration;
+    private AtomicLong num = new AtomicLong(0L);
 
     @Override
     public Boolean matchType(String type) {
-        return GeneratorNameStrategy.LONG_UID.name().equalsIgnoreCase(type);
+        return GeneratorNameStrategy.KEY_AND_ID.name().equalsIgnoreCase(type);
     }
 
     @Override
     public String generatorName() {
-        String key = threadPoolConfiguration.getKey();
-        return UUIDUtil.uuidStr();
+        return getKey() + "-" + num.getAndIncrement();
+    }
+
+    private String getKey() {
+        return threadPoolConfiguration.getKey();
+    }
+
+    @Override
+    public Boolean isReady() {
+        return null != getKey();
     }
 
     @Autowired

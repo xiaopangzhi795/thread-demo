@@ -13,8 +13,8 @@ import org.slf4j.LoggerFactory;
  * @Author: rubik
  * rubik create GeekUncaughtExceptionHandler.java of 2022/1/20 11:18 下午
  */
-public class DefaultUncaughtExceptionHandler<R extends DefaultThreadCallback> implements Thread.UncaughtExceptionHandler {
-    private static final Logger logger = LoggerFactory.getLogger(DefaultUncaughtExceptionHandler.class);
+public class GeekUncaughtExceptionHandler<R extends DefaultThreadCallback> implements Thread.UncaughtExceptionHandler {
+    private static final Logger logger = LoggerFactory.getLogger(GeekUncaughtExceptionHandler.class);
 
     @Override
     public void uncaughtException(Thread t, Throwable e) {
