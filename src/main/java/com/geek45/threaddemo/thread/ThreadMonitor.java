@@ -34,13 +34,16 @@ public class  ThreadMonitor {
         if (null != poolExecutor) {
             return poolExecutor;
         }
-        GeneratorThreadNameStrategy generatorThreadNameStrategy = GeneratorNameFactory.INSTANCE.getStrategyByType(configuration.getGeneratorNameType());
+        logger.info("线程池的配置是：{}", configuration);
         poolExecutor = new ThreadPoolExecutor(configuration.getCoreSize(),
                 configuration.getMaxSize(),
                 configuration.getKeepAliveTime(),
                 TimeUnit.valueOf(configuration.getTimeUnit()),
                 new LinkedBlockingDeque<>(configuration.getTaskMaxCount()),
-                new GeekThreadFactory());
+                GeekThreadFactory.create(configuration));
+        if (null != configuration.getMonitor() && configuration.getMonitor()) {
+            ThreadMonitor.monitor(configuration.getMonitorMills());
+        }
         return poolExecutor;
     }
 

@@ -63,6 +63,16 @@ public class ThreadPoolConfiguration implements Serializable {
      */
     private Integer priority;
 
+    /**
+     * 是否监控
+     */
+    private Boolean monitor;
+
+    /**
+     * 监控间隔时间
+     */
+    private Long monitorMills;
+
     public Integer getCoreSize() {
         return coreSize;
     }
@@ -133,5 +143,38 @@ public class ThreadPoolConfiguration implements Serializable {
 
     public void setPriority(Integer priority) {
         this.priority = priority;
+    }
+
+    public Boolean getMonitor() {
+        return monitor;
+    }
+
+    public void setMonitor(Boolean monitor) {
+        this.monitor = monitor;
+    }
+
+    public Long getMonitorMills() {
+        return monitorMills;
+    }
+
+    public void setMonitorMills(Long monitorMills) {
+        this.monitorMills = monitorMills;
+    }
+
+    @Override
+    public String toString() {
+        return "ThreadPoolConfiguration{" +
+                "coreSize=" + coreSize +
+                ", maxSize=" + maxSize +
+                ", keepAliveTime=" + keepAliveTime +
+                ", timeUnit='" + timeUnit + '\'' +
+                ", key='" + key + '\'' +
+                ", generatorNameType='" + generatorNameType + '\'' +
+                ", taskMaxCount=" + taskMaxCount +
+                ", daemon=" + daemon +
+                ", priority=" + priority +
+                ", monitor=" + monitor +
+                ", monitorMills=" + monitorMills +
+                '}';
     }
 }

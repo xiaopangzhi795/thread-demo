@@ -61,6 +61,18 @@
       "description": "线程优先级 .",
       "sourceType": "com.geek45.threaddemo.thread.config.ThreadPoolConfiguration",
       "defaultValue": 5
+    },{
+      "name": "thread.config.monitor",
+      "type": "String.lang.Boolean",
+      "description": "是否监控线程池状态 .",
+      "sourceType": "com.geek45.threaddemo.thread.config.ThreadPoolConfiguration",
+      "defaultValue": true
+    },{
+      "name": "thread.config.monitorMills",
+      "type": "String.lang.Long",
+      "description": "监控间隔时间 .",
+      "sourceType": "com.geek45.threaddemo.thread.config.ThreadPoolConfiguration",
+      "defaultValue": 3000
     }
   ]
 }

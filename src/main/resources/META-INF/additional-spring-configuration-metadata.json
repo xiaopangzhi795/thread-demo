@@ -36,6 +36,14 @@
       "name": "thread.config.priority",
       "description": "线程优先级 .",
       "defaultValue": 5
+    },{
+      "name": "thread.config.monitor",
+      "description": "是否监控线程池状态 .",
+      "defaultValue": true
+    },{
+      "name": "thread.config.monitorMills",
+      "description": "监控间隔时间 .",
+      "defaultValue": 3000
     }
   ]
 }

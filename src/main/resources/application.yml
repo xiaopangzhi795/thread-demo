@@ -9,3 +9,5 @@ thread:
     taskMaxCount: 2048
     daemon: true
     priority: 5
+    monitor: true
+    monitorMills: 3000
