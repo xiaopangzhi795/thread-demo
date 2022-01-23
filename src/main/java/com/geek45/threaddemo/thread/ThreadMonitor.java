@@ -44,6 +44,10 @@ public class  ThreadMonitor {
         if (null != configuration.getMonitor() && configuration.getMonitor()) {
             ThreadMonitor.monitor(configuration.getMonitorMills());
         }
+        Runtime.getRuntime().addShutdownHook(new Thread(()->{
+            logger.info("关闭线程池,关闭监控并移除监控...");
+            stopMonitor();
+        }));
         return poolExecutor;
     }
 
@@ -72,6 +76,7 @@ public class  ThreadMonitor {
     }
 
     private static AtomicBoolean isMonitor = new AtomicBoolean(Boolean.FALSE);
+    private static String monitorName = null;
 
     /**
      * //TODO 开始执行监控，考虑单独打印日志，由配置触发，可手动结束
@@ -84,7 +89,7 @@ public class  ThreadMonitor {
             logger.info("监控已经是启动状态");
             return;
         }
-
+        monitorName = Thread.currentThread().getName();
         poolExecutor.execute(() -> {
             String name = Thread.currentThread().getName();
             addThread(name, Thread.currentThread());
@@ -110,6 +115,7 @@ public class  ThreadMonitor {
 
     public static void stopMonitor() {
         isMonitor.compareAndSet(Boolean.TRUE, Boolean.FALSE);
+        removeThread(monitorName);
         logger.info("结束监控...");
     }
 
