@@ -44,10 +44,10 @@ public class  ThreadMonitor {
         if (null != configuration.getMonitor() && configuration.getMonitor()) {
             ThreadMonitor.monitor(configuration.getMonitorMills());
         }
-        Runtime.getRuntime().addShutdownHook(new Thread(()->{
+        Runtime.getRuntime().addShutdownHook(poolExecutor.getThreadFactory().newThread((() -> {
             logger.info("关闭线程池,关闭监控并移除监控...");
             stopMonitor();
-        }));
+        })));
         return poolExecutor;
     }
 

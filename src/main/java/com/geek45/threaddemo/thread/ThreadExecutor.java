@@ -38,4 +38,8 @@ public class ThreadExecutor implements CommandLineRunner {
         pool.execute(task);
     }
 
+    public Thread newThread(GeekTaskRunnable task) {
+        return pool.getThreadFactory().newThread(task);
+    }
+
 }
